@@ -3,7 +3,7 @@
 
 - name: install base condarc
   sudo: no
-  copy: src={{ item }} dest="~/.{{ item }}"
+  copy: src={{ item }} dest="~/.{{ item }}" force=no
   with_items:
     - condarc
   when: miniconda_add_condarc
@@ -19,5 +19,6 @@
 - name: create environments
   sudo: no
   shell: "{{ miniconda_home }}/bin/conda create --yes -q -n {{ item.name }} python={{ item.python_version }} {{ item.pkgs }} creates={{ miniconda_home }}/envs/{{ item.name }}"
+  with_items:
+     - "{{ miniconda_environments }}"
   when: miniconda_installed | success
-  with_items: miniconda_environments
